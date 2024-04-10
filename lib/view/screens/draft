@@ -1,0 +1,52 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+
+Future <void> main() async { 
+  final done = Completer<void>();
+ runApp(BigRedOne(done:done));
+ await Future<void>.delayed(8.seconds);
+ await done.future;
+  runApp(const MyApp());
+}
+
+class BigRedOne extends StatelessWidget {
+  const BigRedOne({
+    required this.done,
+    super.key
+  });
+  final Completer<void> done ;
+  
+  @override
+  Widget build(BuildContext context){
+return MaterialApp(
+  home: Material(
+    color: Colors.red,
+    child:  FittedBox(
+      child: const Text('1')
+      .animate(onComplete: (_)=> done.complete())
+      .fadeIn(duration: 1500.ms)
+      .then()
+      .fadeOut(),
+      
+    ),
+
+  ),
+);
+  }
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+    home: Scaffold(
+body: Center(child: Text("hello world"),),
+      ),  );
+  }
+}
